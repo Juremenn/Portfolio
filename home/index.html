@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -32,7 +32,7 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            scroll-behavior: auto; /* Di-handle oleh JS untuk offset */
+            scroll-behavior: auto; /* Handled by JS to preserve offset */
         }
 
         body {
@@ -57,6 +57,40 @@
                 linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
             background-size: 40px 40px;
             z-index: -2;
+        }
+
+        /* === SCROLLBAR STYLING === */
+        html {
+            scrollbar-width: auto;
+            scrollbar-color: rgba(198, 206, 222, 0.95) rgba(8, 11, 18, 0.95);
+        }
+
+        ::-webkit-scrollbar {
+            width: 14px;
+            height: 14px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: linear-gradient(180deg, rgba(10, 14, 24, 0.98), rgba(7, 10, 18, 0.98));
+            border-left: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, rgba(224, 230, 242, 0.92), rgba(168, 177, 195, 0.92));
+            border-radius: 999px;
+            border: 3px solid rgba(8, 11, 18, 0.95);
+            box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.35), 0 0 0 1px rgba(255, 255, 255, 0.06);
+            transition: background 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(180deg, rgba(240, 245, 255, 0.96), rgba(182, 193, 214, 0.96));
+            border-color: rgba(7, 10, 18, 1);
+            box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.5), 0 0 12px rgba(180, 195, 220, 0.24);
+        }
+
+        ::-webkit-scrollbar-corner {
+            background: rgba(8, 11, 18, 0.95);
         }
 
         h1, h2, h3, h4, h5, h6 {
@@ -703,9 +737,9 @@
             <div class="typing-container">
                 <span class="typing"></span><span class="cursor"></span>
             </div>
-            <p class="hero-description">Saya membantu developer dan bisnis kecil mendeteksi celah keamanan lebih awal, lalu mengubahnya menjadi perbaikan nyata yang bisa diterapkan tim teknis tanpa drama.</p>
+            <p class="hero-description">I help developers and small businesses detect security gaps early, then turn findings into practical fixes teams can implement quickly and confidently.</p>
             <div class="hero-tags">
-                <span class="hero-tag">Frontend & Backend</span>
+                <span class="hero-tag">Frontend  & Backend</span>
                 <span class="hero-tag">Hands-on Report + Mitigation</span>
             </div>
             <div class="hero-actions">
@@ -736,7 +770,7 @@
     <section id="about">
         <h2 class="section-title reveal">About Me</h2>
         <div class="about-content reveal">
-            <p>Perkenalkan, saya <span>Nirvana Handika Putra</span>. Sebagai seorang siswa SMK yang memiliki passion mendalam di bidang keamanan siber dan pengembangan backend, saya mendedikasikan waktu saya untuk memahami bagaimana sistem bekerja—dan bagaimana celah dapat ditemukan sebelum disalahgunakan. Fokus utama saya adalah mengidentifikasi kerentanan secara etis dan membangun arsitektur yang tangguh.</p>
+            <p>Hello, I am <span>Nirvana Handika Putra</span>. As a vocational high school student with a strong passion for cybersecurity and backend development, I dedicate my time to understanding how systems work and how vulnerabilities can be discovered before they are abused. My core focus is ethical vulnerability identification and building resilient architectures.</p>
         </div>
     </section>
 
@@ -746,37 +780,32 @@
             <div class="card reveal tilt-card">
                 <i class='bx bxl-product-hunt card-icon'></i>
                 <h3>BurpSuite</h3>
-                <p>Web vulnerability scanner dan interception proxy utama untuk pengujian penetrasi aplikasi web.</p>
+                <p>Primary web vulnerability scanner and interception proxy for structured web application penetration testing.</p>
             </div>
             <div class="card reveal tilt-card">
                 <i class='bx bx-data card-icon'></i>
                 <h3>SQL Injection</h3>
-                <p>Metodologi eksploitasi dan remediasi kerentanan database melalui manipulasi query input.</p>
+                <p>Exploitation and remediation methodology for database vulnerabilities through input query manipulation.</p>
             </div>
             <div class="card reveal tilt-card">
                 <i class='bx bx-search-alt card-icon'></i>
                 <h3>Google Dorking</h3>
-                <p>Teknik OSINT tingkat lanjut menggunakan operator pencarian untuk menemukan informasi sensitif yang terekspos.</p>
+                <p>Advanced OSINT technique using search operators to discover exposed sensitive information.</p>
             </div>
             <div class="card reveal tilt-card">
                 <i class='bx bx-id-card card-icon'></i>
                 <h3>PII Exposure</h3>
-                <p>Analisis dan pencegahan kebocoran Personally Identifiable Information pada sistem.</p>
-            </div>
-            <div class="card reveal tilt-card">
-                <i class='bx bx-shield-quarter card-icon'></i>
-                <h3>Sensitive Data</h3>
-                <p>Penanganan Sensitive Data Exposure (OWASP Top 10) dan implementasi kriptografi dasar.</p>
+                <p>Analysis and prevention of Personally Identifiable Information leakage across systems.</p>
             </div>
             <div class="card reveal tilt-card">
                 <i class='bx bxl-php card-icon'></i>
                 <h3>Laravel</h3>
-                <p>Pengembangan backend yang solid dan arsitektur aplikasi sisi server yang aman.</p>
+                <p>Robust backend development and secure server-side architecture design.</p>
             </div>
             <div class="card reveal tilt-card">
                 <i class='bx bx-cylinder card-icon'></i>
                 <h3>MySQL</h3>
-                <p>Manajemen basis data relasional, pengamanan struktur tabel, dan optimasi kueri.</p>
+                <p>Relational database management, schema hardening, and query performance optimization.</p>
             </div>
         </div>
     </section>
@@ -787,22 +816,17 @@
             <div class="card reveal tilt-card">
                 <i class='bx bx-globe card-icon'></i>
                 <h3>Web App Pentesting</h3>
-                <p>Identifikasi celah keamanan (XSS, CSRF, RCE) pada aplikasi web berbasis OWASP metodologi secara komprehensif.</p>
-            </div>
-            <div class="card reveal tilt-card">
-                <i class='bx bx-transfer-alt card-icon'></i>
-                <h3>API Security</h3>
-                <p>Menguji endpoint RESTful dan arsitektur API dari eksploitasi otentikasi, otorisasi, dan injeksi data.</p>
+                <p>Comprehensive OWASP-based assessment of web vulnerabilities including XSS, CSRF, and RCE.</p>
             </div>
             <div class="card reveal tilt-card">
                 <i class='bx bx-code-alt card-icon'></i>
                 <h3>Code Review</h3>
-                <p>Analisis white-box pada source code (fokus Laravel/PHP) untuk menemukan kerentanan logika tingkat dalam.</p>
+                <p>White-box source code analysis (focused on Laravel/PHP) to uncover deep logic vulnerabilities.</p>
             </div>
             <div class="card reveal tilt-card">
                 <i class='bx bx-ghost card-icon'></i>
                 <h3>Red Teaming</h3>
-                <p>Simulasi serangan siber komprehensif yang dirancang untuk menguji kesiapan deteksi dan respons dari tim target.</p>
+                <p>Comprehensive cyberattack simulations designed to evaluate the target team's detection and response readiness.</p>
             </div>
         </div>
     </section>
@@ -813,22 +837,22 @@
             <div class="card reveal tilt-card">
                 <span class="step-badge">01</span>
                 <h3>Scope Mapping</h3>
-                <p>Menentukan target, aset kritis, dan level testing agar pengujian fokus pada risiko paling berbahaya.</p>
+                <p>Define targets, critical assets, and testing depth so assessments focus on the highest-impact risks.</p>
             </div>
             <div class="card reveal tilt-card">
                 <span class="step-badge">02</span>
                 <h3>Attack Simulation</h3>
-                <p>Menjalankan simulasi eksploitasi terkontrol pada endpoint, business logic, dan komponen autentikasi.</p>
+                <p>Run controlled exploit simulations against endpoints, business logic, and authentication components.</p>
             </div>
             <div class="card reveal tilt-card">
                 <span class="step-badge">03</span>
                 <h3>Proof & Impact</h3>
-                <p>Setiap temuan dilengkapi bukti, skenario impact, serta prioritas risiko agar tim cepat mengeksekusi perbaikan.</p>
+                <p>Each finding includes proof, impact scenarios, and risk priority so teams can remediate quickly.</p>
             </div>
             <div class="card reveal tilt-card">
                 <span class="step-badge">04</span>
                 <h3>Remediation Assist</h3>
-                <p>Mendampingi implementasi patch dengan validasi ulang untuk memastikan kerentanan benar-benar tertutup.</p>
+                <p>Support patch implementation with re-validation to ensure vulnerabilities are fully closed.</p>
             </div>
         </div>
     </section>
@@ -840,7 +864,7 @@
                 <div>
                     <i class='bx bx-radar card-icon'></i>
                     <h3>Vulnerability Scanner</h3>
-                    <p>Skrip otomatisasi untuk melakukan scanning awal terhadap server target dan mendeteksi port/servis terbuka dengan pola kerentanan umum.</p>
+                    <p>Automation script for initial target server reconnaissance to detect open ports/services and common vulnerability patterns.</p>
                 </div>
                 <a href="#" class="project-link">View Repository <i class='bx bx-right-arrow-alt'></i></a>
             </div>
@@ -848,7 +872,7 @@
                 <div>
                     <i class='bx bx-flag card-icon'></i>
                     <h3>CTF Writeups</h3>
-                    <p>Kumpulan solusi dan metodologi eksploitasi dari berbagai kompetisi Capture The Flag (CTF) yang berfokus pada web dan pwn.</p>
+                    <p>A curated collection of solutions and exploitation methodologies from web and pwn Capture The Flag competitions.</p>
                 </div>
                 <a href="#" class="project-link">Read Writeups <i class='bx bx-right-arrow-alt'></i></a>
             </div>
@@ -856,7 +880,7 @@
                 <div>
                     <i class='bx bx-file card-icon'></i>
                     <h3>Security Audit Report</h3>
-                    <p>Format laporan audit keamanan profesional yang merinci temuan kerentanan, skor CVSS, bukti konsep (PoC), dan saran mitigasi.</p>
+                    <p>Professional security audit report format detailing vulnerabilities, CVSS scoring, proof of concept (PoC), and mitigation guidance.</p>
                 </div>
                 <a href="#" class="project-link">Download Sample <i class='bx bx-right-arrow-alt'></i></a>
             </div>
@@ -1032,7 +1056,7 @@
                 const centerX = rect.width / 2;
                 const centerY = rect.height / 2;
                 
-                // Rotasi lebih halus
+                // Smoother rotation
                 const rotateX = ((y - centerY) / centerY) * -8;
                 const rotateY = ((x - centerX) / centerX) * 8;
                 
