@@ -1,0 +1,1112 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nirvana Handika Putra - Penetration Tester</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700;800&display=swap" rel="stylesheet">
+    
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
+    <style>
+        /* === VARIABLES & BASE === */
+        :root {
+            --bg-dark: #070707;
+            --bg-card: #121212;
+            --bg-soft: #101520;
+            --neon-green: #00ff66;
+            --neon-cyan: #00f0ff;
+            --neon-orange: #ffb020;
+            --text-main: #e0e0e0;
+            --text-muted: #9e9e9e;
+            --font-heading: 'Poppins', sans-serif;
+            --font-body: 'Inter', sans-serif;
+            --nav-height: 80px;
+            --grid-line: rgba(255, 255, 255, 0.04);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: auto; /* Di-handle oleh JS untuk offset */
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            font-family: var(--font-body);
+            overflow-x: hidden;
+            line-height: 1.6;
+            background-image:
+                radial-gradient(circle at 10% 15%, rgba(0, 240, 255, 0.12), transparent 32%),
+                radial-gradient(circle at 88% 80%, rgba(0, 255, 102, 0.1), transparent 30%),
+                linear-gradient(120deg, rgba(255, 176, 32, 0.05), transparent 40%);
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            background-image:
+                linear-gradient(var(--grid-line) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+            background-size: 40px 40px;
+            z-index: -2;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: var(--font-heading);
+        }
+
+        /* === DYNAMIC BACKGROUND === */
+        canvas#particle-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            pointer-events: none;
+            opacity: 0.3;
+        }
+
+        /* === NAVBAR === */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            height: var(--nav-height);
+            background: rgba(7, 7, 7, 0.6);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(0, 255, 102, 0.15);
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 5%;
+            transition: all 0.3s ease;
+        }
+
+        .logo {
+            font-family: var(--font-heading);
+            font-weight: 800;
+            font-size: 1.5rem;
+            color: #fff;
+            text-decoration: none;
+            letter-spacing: 0.6px;
+        }
+
+        .logo span {
+            color: var(--neon-green);
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 2rem;
+        }
+
+        nav a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-family: var(--font-heading);
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: color 0.3s ease, text-shadow 0.3s ease;
+            position: relative;
+        }
+
+        nav a:hover, nav a.active {
+            color: var(--neon-cyan);
+            text-shadow: 0 0 8px rgba(0, 240, 255, 0.4);
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--neon-cyan);
+            transition: width 0.3s ease;
+        }
+
+        nav a:hover::after, nav a.active::after {
+            width: 100%;
+        }
+
+        .menu-toggle {
+            display: none;
+            cursor: pointer;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .menu-toggle span {
+            display: block;
+            width: 25px;
+            height: 3px;
+            background: var(--neon-green);
+            transition: 0.3s;
+        }
+
+        /* === LAYOUT & SECTIONS === */
+        section {
+            min-height: 100vh;
+            padding: calc(var(--nav-height) + 4rem) 5% 4rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 3rem;
+            text-align: center;
+            color: #fff;
+            position: relative;
+            align-self: center;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background: var(--neon-green);
+            box-shadow: 0 0 10px var(--neon-green);
+        }
+
+        /* === HERO SECTION === */
+        #home {
+            align-items: flex-start;
+        }
+
+        .hero-shell {
+            max-width: 950px;
+            width: 100%;
+        }
+
+        .hero-greeting {
+            color: var(--neon-cyan);
+            font-weight: 500;
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            letter-spacing: 2px;
+        }
+
+        .glitch-wrapper {
+            position: relative;
+        }
+
+        .glitch {
+            font-size: 4.5rem;
+            font-weight: 800;
+            color: #fff;
+            text-transform: uppercase;
+            position: relative;
+            line-height: 1.1;
+            margin-bottom: 0.5rem;
+        }
+
+        .glitch::before, .glitch::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: transparent;
+        }
+
+        .glitch::before {
+            left: 3px;
+            text-shadow: -2px 0 red;
+            clip-path: polygon(0 0, 100% 0, 100% 45%, 0 45%);
+            animation: glitch-anim 2.5s infinite linear alternate-reverse;
+        }
+
+        .glitch::after {
+            left: -3px;
+            text-shadow: -2px 0 var(--neon-cyan);
+            clip-path: polygon(0 80%, 100% 20%, 100% 100%, 0 100%);
+            animation: glitch-anim2 3s infinite linear alternate-reverse;
+        }
+
+        @keyframes glitch-anim {
+            0% { clip-path: inset(20% 0 80% 0); }
+            20% { clip-path: inset(60% 0 10% 0); }
+            40% { clip-path: inset(40% 0 50% 0); }
+            60% { clip-path: inset(80% 0 5% 0); }
+            80% { clip-path: inset(10% 0 70% 0); }
+            100% { clip-path: inset(30% 0 20% 0); }
+        }
+
+        @keyframes glitch-anim2 {
+            0% { clip-path: inset(15% 0 55% 0); }
+            20% { clip-path: inset(30% 0 20% 0); }
+            40% { clip-path: inset(80% 0 5% 0); }
+            60% { clip-path: inset(10% 0 60% 0); }
+            80% { clip-path: inset(50% 0 30% 0); }
+            100% { clip-path: inset(5% 0 80% 0); }
+        }
+
+        .typing-container {
+            font-size: 1.8rem;
+            font-family: var(--font-heading);
+            font-weight: 600;
+            color: var(--neon-green);
+            height: 2.5rem;
+            margin-bottom: 2.5rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .cursor {
+            display: inline-block;
+            width: 3px;
+            height: 2rem;
+            background-color: var(--neon-green);
+            margin-left: 5px;
+            animation: blink 0.8s infinite;
+        }
+
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+
+        .cta-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 30px;
+            background: transparent;
+            color: var(--neon-green);
+            font-family: var(--font-heading);
+            font-weight: 600;
+            text-decoration: none;
+            border: 2px solid var(--neon-green);
+            border-radius: 4px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .cta-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 255, 102, 0.15);
+            transition: left 0.3s ease;
+            z-index: -1;
+        }
+
+        .cta-btn:hover::before { left: 0; }
+        .cta-btn:hover {
+            box-shadow: 0 0 20px rgba(0, 255, 102, 0.4);
+            text-shadow: 0 0 5px rgba(0, 255, 102, 0.5);
+            transform: translateY(-3px);
+        }
+
+        .hero-description {
+            max-width: 680px;
+            font-size: 1.05rem;
+            color: #c0c8d8;
+            margin-bottom: 2rem;
+        }
+
+        .hero-actions {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .ghost-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 20px;
+            color: var(--text-main);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .ghost-btn:hover {
+            border-color: var(--neon-cyan);
+            color: var(--neon-cyan);
+            transform: translateY(-2px);
+        }
+
+        .hero-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.7rem;
+            margin-bottom: 2rem;
+        }
+
+        .hero-tag {
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            background: rgba(16, 21, 32, 0.65);
+            color: #dbe6ff;
+            font-size: 0.84rem;
+            padding: 0.45rem 0.75rem;
+            border-radius: 999px;
+            letter-spacing: 0.4px;
+        }
+
+        .hero-stats {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(140px, 1fr));
+            gap: 1rem;
+            max-width: 760px;
+            width: 100%;
+        }
+
+        .stat-item {
+            background: linear-gradient(145deg, rgba(15, 20, 31, 0.85), rgba(11, 11, 11, 0.85));
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 12px;
+            padding: 1.1rem 1rem;
+        }
+
+        .stat-value {
+            display: inline-flex;
+            align-items: baseline;
+            gap: 2px;
+            font-size: 1.9rem;
+            font-family: var(--font-heading);
+            font-weight: 700;
+            color: var(--neon-orange);
+            line-height: 1;
+        }
+
+        .stat-label {
+            margin-top: 0.45rem;
+            color: #c5cde0;
+            font-size: 0.9rem;
+        }
+
+        /* === ABOUT === */
+        .about-content {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+            font-size: 1.15rem;
+            color: var(--text-muted);
+        }
+
+        .about-content span {
+            color: var(--neon-cyan);
+            font-weight: 600;
+        }
+
+        /* === GRID & CARDS (Tech, Expertise, Projects) === */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .card {
+            background: var(--bg-card);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 2.5rem 2rem;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            transform-style: preserve-3d;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .card:hover {
+            border-color: rgba(0, 240, 255, 0.4);
+            box-shadow: 0 10px 30px -10px rgba(0, 240, 255, 0.15);
+            z-index: 10;
+        }
+
+        .card-icon {
+            font-size: 3rem;
+            color: var(--neon-cyan);
+            transform: translateZ(40px);
+            transition: color 0.3s ease;
+        }
+
+        .card:hover .card-icon { color: var(--neon-green); }
+
+        .card h3 {
+            font-size: 1.4rem;
+            color: #fff;
+            transform: translateZ(30px);
+        }
+
+        .card p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            transform: translateZ(20px);
+        }
+
+        .tech-grid { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+
+        .workflow-grid {
+            grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+        }
+
+        .step-badge {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            border: 1px solid rgba(0, 255, 102, 0.4);
+            color: var(--neon-green);
+            font-family: var(--font-heading);
+            font-weight: 700;
+            margin-bottom: 0.6rem;
+        }
+        
+        .project-link {
+            margin-top: auto;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--neon-green);
+            text-decoration: none;
+            font-weight: 600;
+            transform: translateZ(20px);
+            transition: gap 0.3s ease;
+            font-family: var(--font-heading);
+        }
+
+        .project-link:hover {
+            gap: 15px;
+            text-shadow: 0 0 8px rgba(0, 255, 102, 0.4);
+        }
+
+        /* === CONTACT === */
+        .contact-container {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 4rem;
+            max-width: 1000px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .info-item {
+            display: flex;
+            gap: 15px;
+            align-items: flex-start;
+        }
+
+        .info-item i {
+            font-size: 1.5rem;
+            color: var(--neon-cyan);
+        }
+
+        .info-item h4 {
+            color: #fff;
+            margin-bottom: 0.2rem;
+            font-size: 1.1rem;
+        }
+
+        .info-item p, .info-item a {
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: color 0.3s ease;
+            font-size: 0.95rem;
+        }
+
+        .info-item a:hover { color: var(--neon-green); }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            background: var(--bg-card);
+            padding: 2.5rem;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            color: #fff;
+            font-family: var(--font-body);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        input:focus, textarea:focus {
+            border-color: var(--neon-cyan);
+            box-shadow: 0 0 10px rgba(0, 240, 255, 0.15);
+        }
+
+        textarea { resize: vertical; min-height: 150px; }
+
+        button[type="submit"] {
+            cursor: pointer;
+            background: transparent;
+            color: var(--neon-cyan);
+            border: 1px solid var(--neon-cyan);
+            padding: 15px;
+            font-family: var(--font-heading);
+            font-weight: 600;
+            font-size: 1rem;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        button[type="submit"]:hover {
+            background: rgba(0, 240, 255, 0.1);
+            box-shadow: 0 0 15px rgba(0, 240, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        footer {
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 1.3rem 5% 2rem;
+            color: #9da8bc;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .footer-links a {
+            color: #b6c5df;
+            text-decoration: none;
+            font-size: 0.93rem;
+        }
+
+        .footer-links a:hover {
+            color: var(--neon-cyan);
+        }
+
+        /* === SCROLL REVEAL ANIMATION === */
+        .reveal {
+            opacity: 0;
+            transform: translateY(60px) scale(0.95);
+            filter: blur(8px);
+            transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            filter: blur(0);
+        }
+
+        /* === RESPONSIVE === */
+        @media (max-width: 900px) {
+            .contact-container { grid-template-columns: 1fr; }
+            .glitch { font-size: 3.5rem; }
+            .hero-stats { grid-template-columns: repeat(2, minmax(120px, 1fr)); }
+        }
+
+        @media (max-width: 768px) {
+            .menu-toggle { display: flex; }
+            nav ul {
+                position: absolute;
+                top: var(--nav-height);
+                left: -100%;
+                flex-direction: column;
+                background: rgba(7, 7, 7, 0.95);
+                width: 100%;
+                text-align: center;
+                padding: 2rem 0;
+                transition: 0.3s;
+                border-bottom: 1px solid rgba(0, 255, 102, 0.15);
+            }
+            nav ul.active { left: 0; }
+            .glitch { font-size: 2.8rem; }
+            .typing-container { font-size: 1.4rem; }
+            section { padding: calc(var(--nav-height) + 2rem) 5% 3rem; }
+            .hero-actions { flex-direction: column; align-items: flex-start; }
+            .hero-stats { grid-template-columns: 1fr; }
+            footer { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="particle-canvas"></canvas>
+
+    <header>
+        <a href="#home" class="logo" data-target="home">Portfolio</a>
+        <nav>
+            <ul id="nav-menu">
+                <li><a href="#home" data-target="home" class="active">Home</a></li>
+                <li><a href="#about" data-target="about">About</a></li>
+                <li><a href="#tech" data-target="tech">Tech Stack</a></li>
+                <li><a href="#expertise" data-target="expertise">Expertise</a></li>
+                <li><a href="#workflow" data-target="workflow">Workflow</a></li>
+                <li><a href="#projects" data-target="projects">Projects</a></li>
+                <li><a href="#contact" data-target="contact">Contact</a></li>
+            </ul>
+        </nav>
+        <div class="menu-toggle" id="mobile-menu">
+            <span class="bar"></span><span class="bar"></span><span class="bar"></span>
+        </div>
+    </header>
+
+    <section id="home">
+        <div class="reveal hero-shell">
+            <div class="hero-greeting">root@system:~# whoami</div>
+            <div class="glitch-wrapper">
+                <h1 class="glitch" data-text="Nirvana Handika Putra">Nirvana Handika Putra</h1>
+            </div>
+            <div class="typing-container">
+                <span class="typing"></span><span class="cursor"></span>
+            </div>
+            <p class="hero-description">Saya membantu developer dan bisnis kecil mendeteksi celah keamanan lebih awal, lalu mengubahnya menjadi perbaikan nyata yang bisa diterapkan tim teknis tanpa drama.</p>
+            <div class="hero-tags">
+                <span class="hero-tag">Frontend & Backend</span>
+                <span class="hero-tag">Hands-on Report + Mitigation</span>
+            </div>
+            <div class="hero-actions">
+                <a href="#projects" class="cta-btn" data-target="projects">
+                    View My Targets <i class='bx bx-target-lock'></i>
+                </a>
+                <a href="#contact" class="ghost-btn" data-target="contact">
+                    Start Collaboration <i class='bx bx-send'></i>
+                </a>
+            </div>
+            <div class="hero-stats reveal">
+                <div class="stat-item">
+                    <div class="stat-value"><span class="count" data-target="30">0</span>+</div>
+                    <p class="stat-label">Labs & CTF Solved</p>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value"><span class="count" data-target="15">0</span>+</div>
+                    <p class="stat-label">Security Writeups</p>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value"><span class="count" data-target="8">0</span></div>
+                    <p class="stat-label">Tools In Daily Workflow</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="about">
+        <h2 class="section-title reveal">About Me</h2>
+        <div class="about-content reveal">
+            <p>Perkenalkan, saya <span>Nirvana Handika Putra</span>. Sebagai seorang siswa SMK yang memiliki passion mendalam di bidang keamanan siber dan pengembangan backend, saya mendedikasikan waktu saya untuk memahami bagaimana sistem bekerja—dan bagaimana celah dapat ditemukan sebelum disalahgunakan. Fokus utama saya adalah mengidentifikasi kerentanan secara etis dan membangun arsitektur yang tangguh.</p>
+        </div>
+    </section>
+
+    <section id="tech">
+        <h2 class="section-title reveal">Tech Stack & Tools</h2>
+        <div class="grid-container tech-grid">
+            <div class="card reveal tilt-card">
+                <i class='bx bxl-product-hunt card-icon'></i>
+                <h3>BurpSuite</h3>
+                <p>Web vulnerability scanner dan interception proxy utama untuk pengujian penetrasi aplikasi web.</p>
+            </div>
+            <div class="card reveal tilt-card">
+                <i class='bx bx-data card-icon'></i>
+                <h3>SQL Injection</h3>
+                <p>Metodologi eksploitasi dan remediasi kerentanan database melalui manipulasi query input.</p>
+            </div>
+            <div class="card reveal tilt-card">
+                <i class='bx bx-search-alt card-icon'></i>
+                <h3>Google Dorking</h3>
+                <p>Teknik OSINT tingkat lanjut menggunakan operator pencarian untuk menemukan informasi sensitif yang terekspos.</p>
+            </div>
+            <div class="card reveal tilt-card">
+                <i class='bx bx-id-card card-icon'></i>
+                <h3>PII Exposure</h3>
+                <p>Analisis dan pencegahan kebocoran Personally Identifiable Information pada sistem.</p>
+            </div>
+            <div class="card reveal tilt-card">
+                <i class='bx bx-shield-quarter card-icon'></i>
+                <h3>Sensitive Data</h3>
+                <p>Penanganan Sensitive Data Exposure (OWASP Top 10) dan implementasi kriptografi dasar.</p>
+            </div>
+            <div class="card reveal tilt-card">
+                <i class='bx bxl-php card-icon'></i>
+                <h3>Laravel</h3>
+                <p>Pengembangan backend yang solid dan arsitektur aplikasi sisi server yang aman.</p>
+            </div>
+            <div class="card reveal tilt-card">
+                <i class='bx bx-cylinder card-icon'></i>
+                <h3>MySQL</h3>
+                <p>Manajemen basis data relasional, pengamanan struktur tabel, dan optimasi kueri.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="expertise">
+        <h2 class="section-title reveal">My Expertise</h2>
+        <div class="grid-container">
+            <div class="card reveal tilt-card">
+                <i class='bx bx-globe card-icon'></i>
+                <h3>Web App Pentesting</h3>
+                <p>Identifikasi celah keamanan (XSS, CSRF, RCE) pada aplikasi web berbasis OWASP metodologi secara komprehensif.</p>
+            </div>
+            <div class="card reveal tilt-card">
+                <i class='bx bx-transfer-alt card-icon'></i>
+                <h3>API Security</h3>
+                <p>Menguji endpoint RESTful dan arsitektur API dari eksploitasi otentikasi, otorisasi, dan injeksi data.</p>
+            </div>
+            <div class="card reveal tilt-card">
+                <i class='bx bx-code-alt card-icon'></i>
+                <h3>Code Review</h3>
+                <p>Analisis white-box pada source code (fokus Laravel/PHP) untuk menemukan kerentanan logika tingkat dalam.</p>
+            </div>
+            <div class="card reveal tilt-card">
+                <i class='bx bx-ghost card-icon'></i>
+                <h3>Red Teaming</h3>
+                <p>Simulasi serangan siber komprehensif yang dirancang untuk menguji kesiapan deteksi dan respons dari tim target.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="workflow">
+        <h2 class="section-title reveal">How I Work</h2>
+        <div class="grid-container workflow-grid">
+            <div class="card reveal tilt-card">
+                <span class="step-badge">01</span>
+                <h3>Scope Mapping</h3>
+                <p>Menentukan target, aset kritis, dan level testing agar pengujian fokus pada risiko paling berbahaya.</p>
+            </div>
+            <div class="card reveal tilt-card">
+                <span class="step-badge">02</span>
+                <h3>Attack Simulation</h3>
+                <p>Menjalankan simulasi eksploitasi terkontrol pada endpoint, business logic, dan komponen autentikasi.</p>
+            </div>
+            <div class="card reveal tilt-card">
+                <span class="step-badge">03</span>
+                <h3>Proof & Impact</h3>
+                <p>Setiap temuan dilengkapi bukti, skenario impact, serta prioritas risiko agar tim cepat mengeksekusi perbaikan.</p>
+            </div>
+            <div class="card reveal tilt-card">
+                <span class="step-badge">04</span>
+                <h3>Remediation Assist</h3>
+                <p>Mendampingi implementasi patch dengan validasi ulang untuk memastikan kerentanan benar-benar tertutup.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="projects">
+        <h2 class="section-title reveal">Recent Engagements</h2>
+        <div class="grid-container">
+            <div class="card reveal tilt-card project-card">
+                <div>
+                    <i class='bx bx-radar card-icon'></i>
+                    <h3>Vulnerability Scanner</h3>
+                    <p>Skrip otomatisasi untuk melakukan scanning awal terhadap server target dan mendeteksi port/servis terbuka dengan pola kerentanan umum.</p>
+                </div>
+                <a href="#" class="project-link">View Repository <i class='bx bx-right-arrow-alt'></i></a>
+            </div>
+            <div class="card reveal tilt-card project-card">
+                <div>
+                    <i class='bx bx-flag card-icon'></i>
+                    <h3>CTF Writeups</h3>
+                    <p>Kumpulan solusi dan metodologi eksploitasi dari berbagai kompetisi Capture The Flag (CTF) yang berfokus pada web dan pwn.</p>
+                </div>
+                <a href="#" class="project-link">Read Writeups <i class='bx bx-right-arrow-alt'></i></a>
+            </div>
+            <div class="card reveal tilt-card project-card">
+                <div>
+                    <i class='bx bx-file card-icon'></i>
+                    <h3>Security Audit Report</h3>
+                    <p>Format laporan audit keamanan profesional yang merinci temuan kerentanan, skor CVSS, bukti konsep (PoC), dan saran mitigasi.</p>
+                </div>
+                <a href="#" class="project-link">Download Sample <i class='bx bx-right-arrow-alt'></i></a>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact">
+        <h2 class="section-title reveal">Initialize Connection</h2>
+        <div class="contact-container reveal">
+            <div class="contact-info">
+                <div class="info-item">
+                    <i class='bx bx-envelope'></i>
+                    <div>
+                        <h4>Email</h4>
+                        <a href="mailto:admin@nirvanasec.com">admin@nirvanasec.com</a>
+                    </div>
+                </div>
+                <div class="info-item">
+                    <i class='bx bxl-linkedin'></i>
+                    <div>
+                        <h4>LinkedIn</h4>
+                        <a href="#">linkedin.com/in/nirvanahandika</a>
+                    </div>
+                </div>
+                <div class="info-item">
+                    <i class='bx bxl-github'></i>
+                    <div>
+                        <h4>GitHub</h4>
+                        <a href="#">github.com/nirvanasec</a>
+                    </div>
+                </div>
+            </div>
+            <form id="contact-form" onsubmit="event.preventDefault(); alert('Payload Delivered! (Frontend Demo)');">
+                <input type="text" placeholder="Your Alias / Name" required>
+                <input type="email" placeholder="Return Address (Email)" required>
+                <textarea placeholder="Encrypted Message (Your Message)" required></textarea>
+                <button type="submit">Execute Request</button>
+            </form>
+        </div>
+    </section>
+
+    <footer>
+        <p>Built by Nirvana Handika Putra. Security-first, performance-aware.</p>
+        <div class="footer-links">
+            <a href="#home" data-target="home">Back to top</a>
+            <a href="#projects" data-target="projects">Projects</a>
+            <a href="#contact" data-target="contact">Contact</a>
+        </div>
+    </footer>
+
+    <script>
+        // 1. DYNAMIC BACKGROUND (Particle Network)
+        const canvas = document.getElementById('particle-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.vx = (Math.random() - 0.5) * 0.5;
+                this.vy = (Math.random() - 0.5) * 0.5;
+                this.radius = Math.random() * 2;
+            }
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+                if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
+                if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
+            }
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.fillStyle = '#00ff66';
+                ctx.fill();
+            }
+        }
+
+        for (let i = 0; i < 70; i++) particles.push(new Particle());
+
+        function animateCanvas() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach((p, index) => {
+                p.update();
+                p.draw();
+                // Connect particles
+                for (let j = index + 1; j < particles.length; j++) {
+                    const dx = p.x - particles[j].x;
+                    const dy = p.y - particles[j].y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    if (distance < 120) {
+                        ctx.beginPath();
+                        ctx.strokeStyle = `rgba(0, 240, 255, ${1 - distance/120})`;
+                        ctx.lineWidth = 0.5;
+                        ctx.moveTo(p.x, p.y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.stroke();
+                    }
+                }
+            });
+            requestAnimationFrame(animateCanvas);
+        }
+        animateCanvas();
+
+        // 2. TYPING EFFECT
+        const texts = ["Penetration Tester", "Security Researcher", "Ethical Hacker"];
+        let count = 0;
+        let index = 0;
+        let isDeleting = false;
+        const typingElement = document.querySelector('.typing');
+
+        function type() {
+            const currentText = texts[count % texts.length];
+            typingElement.textContent = isDeleting 
+                ? currentText.substring(0, index--) 
+                : currentText.substring(0, index++);
+
+            let typeSpeed = isDeleting ? 50 : 100;
+
+            if (!isDeleting && index === currentText.length + 1) {
+                typeSpeed = 2000;
+                isDeleting = true;
+            } else if (isDeleting && index === 0) {
+                isDeleting = false;
+                count++;
+                typeSpeed = 500;
+            }
+            setTimeout(type, typeSpeed);
+        }
+        setTimeout(type, 1000);
+
+        // 3. COUNT-UP STATS WHEN HOME SECTION APPEARS
+        const counters = document.querySelectorAll('.count');
+        let hasCounted = false;
+
+        function animateCounters() {
+            if (hasCounted) return;
+            hasCounted = true;
+
+            counters.forEach(counter => {
+                const target = Number(counter.getAttribute('data-target'));
+                let value = 0;
+                const increment = Math.max(1, Math.ceil(target / 40));
+
+                const updateCounter = () => {
+                    value += increment;
+                    if (value >= target) {
+                        counter.textContent = String(target);
+                        return;
+                    }
+                    counter.textContent = String(value);
+                    requestAnimationFrame(updateCounter);
+                };
+
+                requestAnimationFrame(updateCounter);
+            });
+        }
+
+        // 4. 3D CARD TILT EFFECT
+        const cards = document.querySelectorAll('.tilt-card');
+        cards.forEach(card => {
+            card.addEventListener('mousemove', e => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                
+                // Rotasi lebih halus
+                const rotateX = ((y - centerY) / centerY) * -8;
+                const rotateY = ((x - centerX) / centerX) * 8;
+                
+                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+            });
+
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
+            });
+        });
+
+        // 5. SMOOTH SCROLL WITH OFFSET & ACTIVE LINKS
+        const navLinks = document.querySelectorAll('a[data-target]');
+        const navHeight = document.querySelector('header').offsetHeight;
+
+        navLinks.forEach(link => {
+            link.addEventListener('click', e => {
+                e.preventDefault();
+                const targetId = link.getAttribute('data-target');
+                const targetSection = document.getElementById(targetId);
+                
+                window.scrollTo({
+                    top: targetSection.offsetTop - navHeight + 5,
+                    behavior: 'smooth'
+                });
+
+                // Close mobile menu
+                document.getElementById('nav-menu').classList.remove('active');
+            });
+        });
+
+        // 6. INTERSECTION OBSERVER (Scroll Reveal & Nav Highlight)
+        const sections = document.querySelectorAll('section');
+        const reveals = document.querySelectorAll('.reveal');
+
+        const observerOptions = {
+            root: null,
+            rootMargin: `-${navHeight}px 0px 0px 0px`,
+            threshold: 0.2
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                // Handle Scroll Reveal
+                if (entry.isIntersecting && entry.target.classList.contains('reveal')) {
+                    entry.target.classList.add('active');
+                }
+
+                if (entry.isIntersecting && entry.target.id === 'home') {
+                    animateCounters();
+                }
+                
+                // Handle Active Nav
+                if (entry.isIntersecting && entry.target.tagName.toLowerCase() === 'section') {
+                    const id = entry.target.getAttribute('id');
+                    document.querySelectorAll('nav a').forEach(a => {
+                        a.classList.remove('active');
+                        if (a.getAttribute('data-target') === id) {
+                            a.classList.add('active');
+                        }
+                    });
+                }
+            });
+        }, observerOptions);
+
+        sections.forEach(sec => observer.observe(sec));
+        reveals.forEach(rev => observer.observe(rev));
+
+        // 7. MOBILE MENU TOGGLE
+        const menuToggle = document.getElementById('mobile-menu');
+        const navMenu = document.getElementById('nav-menu');
+        menuToggle.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+        });
+    </script>
+</body>
+</html>
