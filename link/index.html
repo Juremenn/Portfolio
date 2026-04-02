@@ -15,13 +15,13 @@
             </div>
             <h1 class="name">Nirvana</h1>
             <p class="username">@vanlwl</p>
-            <p class="quote">Love you hurt? you strong made by your hurt!</p>
+            <p class="quote" id="typed-quote" data-text="Love you hurt? you strong made by your hurt!"></p>
         </div>
 
         <div class="links-section">
-            <a href="https://lynk.id/randiansyah" class="link-card" data-aos="fade-up" data-aos-delay="100">
+            <a href="/home" class="link-card" data-aos="fade-up" data-aos-delay="100">
                 <i class="fas fa-book icon-book"></i>
-                <span>E-Book Penetration Testing</span>
+                <span>Portfolio</span>
             </a>
 
             <a href="https://github.com/naelxploit/certificates" class="link-card" data-aos="fade-up" data-aos-delay="300">
@@ -29,9 +29,9 @@
                 <span>Certificates</span>
             </a>
 
-            <a href="https://github.com/naelxploit/courses-certificate" class="link-card" data-aos="fade-up" data-aos-delay="200">
-                <i class="fas fa-award icon-course"></i>
-                <span>Course Certificates</span>
+            <a href="https://github.com/juremenn" class="link-card" data-aos="fade-up" data-aos-delay="200">
+                <i class="fab fa-github icon-github"></i>
+                <span>GitHub</span>
             </a>
 
             <a href="https://t.me/GwSonel" class="link-card" data-aos="fade-up" data-aos-delay="400">
@@ -47,6 +47,64 @@
 
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
-    <script src="../js/script.js"></script>
+    <script>
+        if (window.particlesJS) {
+            particlesJS('particles-js', {
+                particles: {
+                    number: { value: 65, density: { enable: true, value_area: 950 } },
+                    color: { value: ['#7d1eff', '#5f12ca'] },
+                    shape: { type: 'circle' },
+                    opacity: { value: 0.7, random: true },
+                    size: { value: 2.7, random: true },
+                    line_linked: {
+                        enable: true,
+                        distance: 140,
+                        color: '#7d1eff',
+                        opacity: 0.32,
+                        width: 1.2
+                    },
+                    move: {
+                        enable: true,
+                        speed: 1.1,
+                        direction: 'none',
+                        random: true,
+                        straight: false,
+                        out_mode: 'out',
+                        bounce: false
+                    }
+                },
+                interactivity: {
+                    detect_on: 'canvas',
+                    events: {
+                        onhover: { enable: false, mode: 'grab' },
+                        onclick: { enable: true, mode: 'push' },
+                        resize: true
+                    },
+                    modes: {
+                        grab: { distance: 140, line_linked: { opacity: 0.35 } },
+                        push: { particles_nb: 3 }
+                    }
+                },
+                retina_detect: true
+            });
+        }
+
+        const quoteElement = document.getElementById('typed-quote');
+        if (quoteElement) {
+            const text = quoteElement.getAttribute('data-text') || '';
+            let i = 0;
+            const typingSpeed = 46;
+
+            function typeQuote() {
+                if (i <= text.length) {
+                    quoteElement.textContent = text.slice(0, i);
+                    i += 1;
+                    setTimeout(typeQuote, typingSpeed);
+                }
+            }
+
+            typeQuote();
+        }
+    </script>
 </body>
 </html>

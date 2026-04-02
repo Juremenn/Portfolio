@@ -107,13 +107,26 @@ body {
     }
 }
 
+@keyframes caret-blink {
+    0%, 49% {
+        border-right-color: rgba(139, 0, 255, 0.95);
+    }
+    50%, 100% {
+        border-right-color: transparent;
+    }
+}
+
 .quote {
     color: #cccccc;
     font-size: 1rem;
     font-style: italic;
     margin-bottom: 10px;
-    animation: fadeIn 2s ease;
     min-height: 24px;
+    display: inline-block;
+    max-width: 100%;
+    padding-right: 4px;
+    border-right: 2px solid rgba(139, 0, 255, 0.95);
+    animation: fadeIn 2s ease, caret-blink 0.9s steps(1) infinite;
 }
 
 /* Links Section */
@@ -196,6 +209,10 @@ body {
 
 .icon-course {
     color: #FFD700;
+}
+
+.icon-github {
+    color: #ffffff;
 }
 
 /* Footer */
